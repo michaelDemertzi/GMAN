@@ -11,39 +11,39 @@ library(extrafont)
 options(warn=-1)
 
 data(zip.regions)
-states <- read.csv('state_table.csv', stringsAsFactors = FALSE)
+states <- read.csv('data/state_table.csv', stringsAsFactors = FALSE)
 
-usaFreedom <- read.csv('usaFreedom.csv', stringsAsFactors = FALSE)
+usaFreedom <- read.csv('data/usaFreedom.csv', stringsAsFactors = FALSE)
 names(usaFreedom)[4] <- 'Vote'
 names(usaFreedom)[14] <- 'Interest.Group.Position'
 usaFreedom$bill <- 'USA Freedom Act'
 
-keystone <- read.csv('keystone.csv', stringsAsFactors = FALSE)
+keystone <- read.csv('data/keystone.csv', stringsAsFactors = FALSE)
 names(keystone)[4] <- 'Vote'
 names(keystone)[14] <- 'Interest.Group.Position'
 keystone$bill <- 'Keystone Pipeline Approval Act'
 
-smallBusinessBurden <- read.csv('smallBusinessBurden.csv', stringsAsFactors = FALSE)
+smallBusinessBurden <- read.csv('data/smallBusinessBurden.csv', stringsAsFactors = FALSE)
 names(smallBusinessBurden)[4] <- 'Vote'
 names(smallBusinessBurden)[14] <- 'Interest.Group.Position'
 smallBusinessBurden$bill <- 'Small Business Regulatory Flexibility Improvement Act'
 
-foodSafety <- read.csv('foodsafety.csv', stringsAsFactors = FALSE)
+foodSafety <- read.csv('data/foodsafety.csv', stringsAsFactors = FALSE)
 names(foodSafety)[4] <- 'Vote'
 names(foodSafety)[14] <- 'Interest.Group.Position'
 foodSafety$bill <- 'Food Safety Labeling Act'
 
-# ppDefunding <- read.csv('ppDefunding.csv', stringsAsFactors = FALSE)
+# ppDefunding <- read.csv('data/ppDefunding.csv', stringsAsFactors = FALSE)
 # names(ppDefunding)[4] <- 'Vote'
 # names(ppDefunding)[14] <- 'Interest.Group.Position'
 # ppDefunding$bill <- 'Planned Parenthood Defunding Act'
 
-studentSuccess <- read.csv('studentSuccess.csv', stringsAsFactors = FALSE)
+studentSuccess <- read.csv('data/studentSuccess.csv', stringsAsFactors = FALSE)
 names(studentSuccess)[4] <- 'Vote'
 names(studentSuccess)[14] <- 'Interest.Group.Position'
 studentSuccess$bill <- 'Student Success Act'
 
-# marketPlaceFairness <- read.csv('marketPlaceFairness.csv', stringsAsFactors = FALSE)
+# marketPlaceFairness <- read.csv('data/marketPlaceFairness.csv', stringsAsFactors = FALSE)
 # names(marketPlaceFairness)[4] <- 'Vote'
 # names(marketPlaceFairness)[14] <- 'Interest.Group.Position'
 # marketPlaceFairness$bill <- 'Market Place Fairness Act'
