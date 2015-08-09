@@ -13,6 +13,21 @@ options(warn=-1)
 data(zip.regions)
 states <- read.csv('data/state_table.csv', stringsAsFactors = FALSE)
 
+stateCodes <- data.frame(Contributor.State = c('AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
+                                               'CT', 'DE', 'DC', 'FL', 'GA', 'HI',
+                                               'ID', 'IL', 'IN', 'IA', 'KS', 'KY',
+                                               'LA', 'ME', 'MD', 'MA', 'MI', 'MN',
+                                               'MS', 'MO', 'MT', 'NE', 'NV', 'NH',
+                                               'NJ', 'NM', 'NY', 'NC', 'ND', 'OH',
+                                               'OK', 'OR', 'PA', 'RI', 'SC', 'SD',
+                                               'TN', 'TX', 'UT', 'VT', 'VA', 'WA',
+                                               'WV', 'WI', 'WY'),
+                         id = c(1, 2, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18,
+                                19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+                                32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 44, 45,
+                                46, 47, 48, 49, 50, 51, 53, 54, 55, 56)
+)
+
 usaFreedom <- read.csv('data/usaFreedom.csv', stringsAsFactors = FALSE)
 names(usaFreedom)[4] <- 'Vote'
 names(usaFreedom)[14] <- 'Interest.Group.Position'
@@ -33,26 +48,15 @@ names(foodSafety)[4] <- 'Vote'
 names(foodSafety)[14] <- 'Interest.Group.Position'
 foodSafety$bill <- 'Food Safety Labeling Act'
 
-# ppDefunding <- read.csv('data/ppDefunding.csv', stringsAsFactors = FALSE)
-# names(ppDefunding)[4] <- 'Vote'
-# names(ppDefunding)[14] <- 'Interest.Group.Position'
-# ppDefunding$bill <- 'Planned Parenthood Defunding Act'
-
 studentSuccess <- read.csv('data/studentSuccess.csv', stringsAsFactors = FALSE)
 names(studentSuccess)[4] <- 'Vote'
 names(studentSuccess)[14] <- 'Interest.Group.Position'
 studentSuccess$bill <- 'Student Success Act'
 
-# marketPlaceFairness <- read.csv('data/marketPlaceFairness.csv', stringsAsFactors = FALSE)
-# names(marketPlaceFairness)[4] <- 'Vote'
-# names(marketPlaceFairness)[14] <- 'Interest.Group.Position'
-# marketPlaceFairness$bill <- 'Market Place Fairness Act'
-
-# allBills <- rbind(usaFreedom, keystone, smallBusinessBurden, ppDefunding,
-#                   studentSuccess, marketPlaceFairness)
-
 allBills <- rbind(usaFreedom, keystone, smallBusinessBurden,
                   foodSafety, studentSuccess)
+allBills$Contributor <- gsub(',', '', allBills$Contributor)
+allBills$Legislator <- gsub(',', '', allBills$Legislator)
 
 allBills$bill <- as.factor(allBills$bill)
 allBills$Party <- as.factor(allBills$Party)
@@ -61,20 +65,50 @@ allBills$Contribution.Type <- as.factor(allBills$Contribution.Type)
 allBills$Contribution.Date <- as.Date(allBills$Contribution.Date,
                                       format = '%m/%d/%Y', tz = '')
 allBills$Interest.Group.Position <- as.factor(allBills$Interest.Group.Position)
-allBills$Contributor.State <- as.factor(allBills$Contributor.State)
+# allBills$Contributor.State <- as.factor(allBills$Contributor.State)
 
 allBills$Contribution.Amount <- gsub('\\$', '', allBills$Contribution.Amount)
 allBills$Contribution.Amount <- as.numeric(allBills$Contribution.Amount)
 
-allBillsStateZip <- allBills %>%
-  filter(!is.na(Contributor.State), !is.na(Contributor.Zip),
-         Contributor.State %in% states$abbreviation,
-         Contributor.Zip %in% zip.regions$region)
-allBillsStateZip$Contributor.State <- factor(allBillsStateZip$Contributor.State)
+allBillsState <- allBills %>%
+  filter(!is.na(Contributor.State),
+         Contributor.State %in% stateCodes$Contributor.State)
+# allBillsStateZip$Contributor.State <- factor(allBillsStateZip$Contributor.State)
+allBillsState <- arrange(allBillsState, bill, Contributor.State,
+                            desc(Contribution.Amount), Contributor)
 
-allBillsStateAgg <- allBillsStateZip %>%
+allBillsStateAgg <- allBillsState %>%
   group_by(bill, Contributor.State) %>%
   summarise(Contribution.Amount = sum(Contribution.Amount))
+
+allBillsStateTop5 <- allBillsState %>%
+  select(bill, Contributor.State, Contribution.Amount,
+         Legislator, Party, Contributor) %>%
+  group_by(bill, Contributor.State) %>%
+  slice(1:5) %>%
+  mutate(tooltipText = paste('$', Contribution.Amount, ' to ',
+                             Legislator, ' (', Party, ') from ',
+                             Contributor, sep = ''))
+allBillsStateTop5 <- allBillsStateTop5 %>%
+  group_by(bill, Contributor.State) %>%
+  summarise(tooltipText = paste(tooltipText, collapse = '\n', sep = ''))
+allBillsStateTop5$tooltipText <- paste('5 largest donations: \n',
+                                       allBillsStateTop5$tooltipText, '\n',
+                                       sep = '')
+
+allBillsStateAgg <- inner_join(allBillsStateAgg, allBillsStateTop5)
+allBillsStateAgg <- inner_join(allBillsStateAgg, stateCodes)
+
+choroAllBillsStateAgg <- allBillsStateAgg %>%
+  ungroup() %>%
+  select(id, Contribution.Amount, tooltipText, bill)
+colnames(choroAllBillsStateAgg) <- c('id', 'dollar', 'tooltiptext', 'bill')
+
+keystoneStateAgg <- filter(choroAllBillsStateAgg,
+                           bill == 'Keystone Pipeline Approval Act')
+keystoneStateAgg <- select(keystoneStateAgg, -bill)
+write.csv(keystoneStateAgg, 'aggregateKeystoneStates.csv', row.names = FALSE)
+
 
 billsVoteDate <- allBills %>%
   group_by(bill, Vote, Contribution.Date) %>%
@@ -155,4 +189,9 @@ server <- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)
+
+allBillsStateZip <- allBills %>%
+  filter(!is.na(Contributor.State), !is.na(Contributor.Zip),
+         Contributor.State %in% stateCodes$Contributor.State,
+         Contributor.Zip %in% zip.regions$region)
 
