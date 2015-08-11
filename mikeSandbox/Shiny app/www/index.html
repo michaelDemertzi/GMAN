@@ -1,0 +1,96 @@
+<html>
+
+<head>
+  <script src="d3/d3.min.js"></script>
+  <script src="shared/jquery.js" type="text/javascript"></script>
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="shared/shiny.css"/> 
+</head>
+ 
+<body>
+<div id="notD3">
+  <h1>HTML UI</h1>
+ 
+  <p>
+    <label>Distribution type:</label><br />
+    <select name="dist">
+      <option value="norm">Normal</option>
+      <option value="unif">Uniform</option>
+      <option value="lnorm">Log-normal</option>
+      <option value="exp">Exponential</option>
+    </select> 
+  </p>
+ 
+  <p>
+    <label>Number of observations:</label><br /> 
+    <input type="number" name="n" value="500" min="1" max="1000" />
+  </p>
+
+  <pre id="summary" class="shiny-text-output"></pre>   
+  <div id="plot" class="shiny-plot-output" 
+       style="width: 100%; height: 400px"></div> 
+  
+  <div id="table" class="shiny-html-output"></div> 
+
+  <p>This should work </p>
+<p id="chart"> Blah blah blah </p>
+</div>
+
+<div id="myD3div">
+	<script>
+	
+	// hard coded data. Replace with another array (defined by square brackets) in memory if you want.
+	var hardCodedData = [ 1, 2, 3 ]
+
+	
+	var egsgrex = {
+	"insideVariable":[
+	{"node":0,"name":"node0"},
+	{"node":1,"name":"node1"},
+	{"node":2,"name":"node2"},
+	{"node":3,"name":"node3"},
+	{"node":4,"name":"node4"}
+	],}
+	 
+	//**********Render Hard Coded Data
+	var elements = d3.select("#myD3div").append("p").selectAll("p")
+	  .data(hardCodedData)
+	  .enter()
+	  .append("p")
+	  .text( function (d) { return "This data is hardcoded: "+d; } );
+	 
+
+	//**********Do the same thing with "JSON" which should be a JSON in memory
+	//Notice you need to call the "insideVariable" below, and also "node" below. Replace this is neccessary.
+	/*
+	var p2 = d3.select("#myD3div")
+		.append("p")
+		.selectAll("p")
+	  .append("p")
+	  .data(JSON.insideVariable)
+	  .enter()
+	  .append("p")
+	  .text( function (d) { return "This is from a variable that needs to be called: insideVariable within the JSON: "+d.node; } );
+	*/
+	</script>
+
+	<script>
+	/*
+	var hardCodedData = [ 1, 2, 3 ]
+	var elements = d3.select("#myD3div").append("p").selectAll("p")
+	  .data(hardCodedData)
+	  .enter()
+	  .append("p")
+	  .text( function (d) { return "This data is hardcoded: "+d; } );
+	*/
+	</script>
+</body>
+
+<p>This is fun</p>
+
+
+
+
+</html>
+
+

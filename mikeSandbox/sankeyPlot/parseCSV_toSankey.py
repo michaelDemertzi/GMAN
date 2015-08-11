@@ -12,8 +12,8 @@ import re
 import numpy as np
 
 #set constants 
-nL = 14 #number of legislators to display
-nC = 14 #number of contributors
+nL = 10 #number of legislators to display
+nC = 10 #number of contributors
 
 #create dictionary by state
 nodes = {}
