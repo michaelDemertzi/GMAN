@@ -78,8 +78,6 @@ server <- function(input, output) {
     billChoro <- tolower(input$billChoro)
     billChoro <- gsub(' ', '', billChoro)
     filename <- paste('choro.', billChoro, '.png', sep = '')
-    cat(filename)
-    cat('\n')
     list(src = filename,
          contentType = 'image/png',
          width = 400,
@@ -91,8 +89,6 @@ server <- function(input, output) {
     billSankey <- tolower(input$billSankey)
     billSankey <- gsub(' ', '', billSankey)
     filename <- paste('sankey.', billSankey, '.png', sep = '')
-    cat(filename)
-    cat('\n')
     list(src = filename,
          contentType = 'image/png',
          width = 400,
