@@ -176,14 +176,20 @@ d3.csv("data/nodes.csv", function(error, data) {
   </p>
 
 
-<div id="sankeyShinyOutput" class="shiny-text-output"></div> 
-
+<div id="sankeyShinyOutput" class="shiny-text-output"></div>
 <script>
+/*
 dataInsideDiv = $('#sankeyShinyOutput')//.text()//.trim()//, || '{}',
-	console.log(dataInsideDiv.text())
+	alert(dataInsideDiv)
 	//linksJSON = JSON.parse(topLevel['links'][0]);
-	
+	//var wanttt = JSON.parsedataInsideDiv.text())
+*/
 </script>
+
+<script>  dataInsideDiv = $('#sankeyShinyOutput');  
+alert(dataInsideDiv)
+	t = "[" + dataInsideDiv.text() + "]"	;
+var parsed = JSON.parse(t);</script>
 
 </body>
 </html>
