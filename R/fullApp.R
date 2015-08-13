@@ -74,38 +74,13 @@ server <- function(input, output) {
     grid.arrange(p1, p2, ncol = 1)
   })
   
-  output$choro <- renderImage({
-    billChoro <- tolower(input$billChoro)
-    billChoro <- gsub(' ', '', billChoro)
-    filename <- paste('choro.', billChoro, '.png', sep = '')
-    cat(filename)
-    cat('\n')
-    list(src = filename,
-         contentType = 'image/png',
-         width = 400,
-         height = 400
-    )
-  }, deleteFile = FALSE)
+  output$choro <- reactive({
+    choroOutputBill(choroData, input$billChoro)
+  })
   
-  output$sankey <- renderImage({
-    billSankey <- tolower(input$billSankey)
-    billSankey <- gsub(' ', '', billSankey)
-    filename <- paste('sankey.', billSankey, '.png', sep = '')
-    cat(filename)
-    cat('\n')
-    list(src = filename,
-         contentType = 'image/png',
-         width = 400,
-         height = 400
-    )
-  }, deleteFile = FALSE)
-  # output$choro <- reactive({
-  #   choroOutputBill(choroData, input$billChoro)
-  # })
-  
-  # output$sankey <- reactive({
-  #   sankeyOutputBill(sankeyData, input$billSankey)
-  # })   
+  output$sankey <- reactive({
+    as.character(sankeyOutputBill(sankeyData, input$billSankey))
+  })   
 }
 
 shinyApp(ui = ui, server = server)

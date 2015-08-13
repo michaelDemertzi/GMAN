@@ -37,12 +37,13 @@ ui <- fluidPage(
               ),
              tabPanel('Sankey',
                       titlePanel('Contributor and Legislator Relationship'),
+                      # includeHTML('sankeyPlot/index.html')
                       sidebarLayout(
                         sidebarPanel(selectInput('billSankey', 'Select a Congressional Bill',
                                                  choices = unique(levels(sankeyData$bill)),
                                                  selected = unique(levels(sankeyData$bill)[1]))),
-                        mainPanel(imageOutput('sankey'))
-                      )         
+                        # mainPanel(imageOutput('sankey'))
+                        mainPanel(includeHTML('sankeyPlot/index.html'))                      )         
              )
   )
 )
