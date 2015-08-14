@@ -32,17 +32,18 @@ ui <- fluidPage(
                         sidebarPanel(selectInput('billChoro', 'Select a Congressional Bill',
                                                  choices = unique(levels(choroData$bill)),
                                                  selected = unique(levels(choroData$bill)[1]))),
-                        mainPanel(textOutput('choro'))
+                        mainPanel(imageOutput('choro'))
                       )
               ),
              tabPanel('Sankey',
                       titlePanel('Contributor and Legislator Relationship'),
+                      # includeHTML('sankeyPlot/index.html')
                       sidebarLayout(
                         sidebarPanel(selectInput('billSankey', 'Select a Congressional Bill',
                                                  choices = unique(levels(sankeyData$bill)),
                                                  selected = unique(levels(sankeyData$bill)[1]))),
-                        mainPanel(textOutput('sankey'))
-                      )         
+                        # mainPanel(imageOutput('sankey'))
+                        mainPanel(includeHTML('sankeyPlot/index.html'))                      )         
              )
   )
 )
@@ -74,13 +75,34 @@ server <- function(input, output) {
     grid.arrange(p1, p2, ncol = 1)
   })
   
-  output$choro <- reactive({
-    choroOutputBill(choroData, input$billChoro)
-  })
+  output$choro <- renderImage({
+    billChoro <- tolower(input$billChoro)
+    billChoro <- gsub(' ', '', billChoro)
+    filename <- paste('choro.', billChoro, '.png', sep = '')
+    list(src = filename,
+         contentType = 'image/png',
+         width = 400,
+         height = 400
+    )
+  }, deleteFile = FALSE)
   
-  output$sankey <- reactive({
-    sankeyOutputBill(sankeyData, input$billSankey)
-  })   
+  output$sankey <- renderImage({
+    billSankey <- tolower(input$billSankey)
+    billSankey <- gsub(' ', '', billSankey)
+    filename <- paste('sankey.', billSankey, '.png', sep = '')
+    list(src = filename,
+         contentType = 'image/png',
+         width = 400,
+         height = 400
+    )
+  }, deleteFile = FALSE)
+  # output$choro <- reactive({
+  #   choroOutputBill(choroData, input$billChoro)
+  # })
+  
+  # output$sankey <- reactive({
+  #   sankeyOutputBill(sankeyData, input$billSankey)
+  # })   
 }
 
 shinyApp(ui = ui, server = server)

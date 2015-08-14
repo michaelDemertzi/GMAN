@@ -21,7 +21,7 @@ sankeyOutputBill <- function(sankeyData, billName) {
 
   colnames(sankeyDataNodes) <- c('node', 'name')
 
-  links <- toJSON(sankeyDataLinks)
-  nodes <- toJSON(sankeyDataNodes)
+  links <- toJSON(head(sankeyDataLinks))
+  nodes <- toJSON(head(sankeyDataNodes))
   return(toJSON(list('links' = links, 'nodes' = nodes)))
 }

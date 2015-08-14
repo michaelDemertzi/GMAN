@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <script src="shared/jquery.js" type="text/javascript"></script>
+  <script src="shared/shiny.js" type="text/javascript"></script>
+  <link rel="stylesheet" type="text/css" href="shared/shiny.css"/> 
+</head>
+ 
+<body>
+  <h1>HTML UI</h1>
+ 
+  <p>
+    <label>Congressional Bill:</label><br />
+    <select name="billSankey">
+      <option selected disabled hidden value=''></option>
+      <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
+      <option value="Keystone Pipeline Approval Act">Keystone Pipeline Approval Act</option>
+      <option value="Small Business Regulatory Flexibility Improvement Act">Small Business Regulatory Flexibility Improvement Act</option>
+    </select> 
+  </p>
+
+  <div id="sankeyJSON" class="shiny-html-output"> </div> 
+  <script>
+    // globally accessible data obj
+    window.currentData = null;
+
+    function parseData(){
+      var text = $('#sankeyJSON').text().trim(),
+      data = JSON.parse(text !== '' ? text : '{}');
+    
+      console.log(data);
+    
+      window.currentData = data;
+    }
+
+    parseData();
+    $('[name=billSankey]').on('change', parseData);  
+  </script>
+
+</body>
+
+</html>
