@@ -74,7 +74,7 @@ dollarAgg = {}
 metadataAgg = {}
 
 #read in CSV
-with open('keystone.csv','rb') as f:
+with open('data/keystone.csv','rb') as f:
     reader = csv.reader(f)
     i = 0
     isHeader=True
