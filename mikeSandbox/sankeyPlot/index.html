@@ -24,10 +24,10 @@
 
 <body>
 <script src="d3/d3.min.js"></script>
-<script src="shared/jquery.js" type="text/javascript"></script>
+<!--<script src="shared/jquery.js" type="text/javascript"></script>
 <script src="shared/shiny.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="shared/shiny.css"/> 
-
+-->
 <p id="chart">
 <script src="js/sankey.js"></script>
 <script>
@@ -36,7 +36,7 @@ var units = "Dollars";
 
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
     width = 1000 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    height = 800 - margin.top - margin.bottom;
 
 var formatNumber = d3.format(",.0f"),    // zero decimal places
     format = function(d) { return formatNumber(d) + " " + units; },
@@ -53,7 +53,7 @@ var svg = d3.select("#chart").append("svg")
 // Set the sankey diagram properties
 var sankey = d3.sankey()
     .nodeWidth(36)
-    .nodePadding(20)
+    .nodePadding(10)
     .size([width, height]);
 
 var path = sankey.link();
@@ -165,7 +165,6 @@ d3.csv("data/nodes.csv", function(error, data) {
 
 
 </script>
-<p id="notChart">This is fun</p>
 
 </body>
 </html>
