@@ -41,12 +41,12 @@ server <- function(input, output) {
   #     scale_y_continuous(labels = comma, limits = limits, breaks = breaks)
   #   grid.arrange(p1, p2, ncol = 1)
   # })
+  
+  # output$choro <- reactive({
+  #   choroOutputBill(choroData, input$billChoro)
+  # })
 
   output$sankeyJSON <- reactive({
-    as.character(sankeyOutputBill(input$billSankey))
+    as.character(sankeyOutputBill(sankeyData, input$billSankey))
   })   
-  
-  output$choroJSON <- reactive({
-    as.character(choroOutputBill(choroData, input$billChoro))
-  })
 }
