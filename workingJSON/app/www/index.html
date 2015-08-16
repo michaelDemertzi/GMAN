@@ -10,7 +10,7 @@
   <h1>HTML UI</h1>
  
   <p>
-    <label>Congressional Bill:</label><br />
+    <label>Congressional Bill for Sankey:</label><br />
     <select name="billSankey">
       <option selected disabled hidden value=''></option>
       <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
@@ -22,7 +22,7 @@
   <div id="sankeyJSON" class="shiny-html-output"> </div> 
   <script>
     // globally accessible data obj
-    window.currentData = null;
+    window.currentSankeyData = null;
 
     function parseData(){
       var text = $('#sankeyJSON').text().trim(),
@@ -30,11 +30,39 @@
     
       console.log(data);
     
-      window.currentData = data;
+      window.currentSankeyData = data;
     }
 
     parseData();
     $('[name=billSankey]').on('change', parseData);  
+  </script>
+
+  <p>
+    <label>Congressional Bill for Choropleth:</label><br />
+    <select name="billChoro">
+      <option selected disabled hidden value=''></option>
+      <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
+      <option value="Keystone Pipeline Approval Act">Keystone Pipeline Approval Act</option>
+      <option value="Small Business Regulatory Flexibility Improvement Act">Small Business Regulatory Flexibility Improvement Act</option>
+    </select> 
+  </p>
+
+  <div id="choroJSON" class="shiny-html-output"> </div> 
+  <script>
+    // globally accessible data obj
+    window.currentChoroData = null;
+
+    function parseData(){
+      var text = $('#choroJSON').text().trim(),
+      data = JSON.parse(text !== '' ? text : '{}');
+    
+      console.log(data);
+    
+      window.currentChoroData = data;
+    }
+
+    parseData();
+    $('[name=billChoro]').on('change', parseData);  
   </script>
 
 </body>
