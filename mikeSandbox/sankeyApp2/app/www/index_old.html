@@ -1,12 +1,12 @@
 <html>
 
 <head>
-  <script src="shared/jquery.js" type="text/javascript"></script>
-  <script src="shared/shiny.js" type="text/javascript"></script>
-  <link rel="stylesheet" type="text/css" href="shared/shiny.css"/> 
+	<script src="shared/jquery.js" type="text/javascript"></script>
+	<script src="shared/shiny.js" type="text/javascript"></script>
+	<link rel="stylesheet" type="text/css" href="shared/shiny.css"/> 
   
-  <!--add code-->
-  	<script src="js/d3.min.js"></script>
+	<script src="js/d3.min.js"></script>
+
 	<script src="js/sankey.js"></script>
 </head>
  
@@ -14,7 +14,7 @@
   <h1>HTML UI</h1>
  
   <p>
-    <label>Congressional Bill for Sankey:</label><br />
+    <label>Congressional Bill:</label><br />
     <select name="billSankey">
       <option selected disabled hidden value=''></option>
       <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
@@ -23,63 +23,28 @@
     </select> 
   </p>
 
-  <div id="sankeyJSON" class="shiny-html-output"> </div> 
+  <div id="sankeyJSON" class="shiny-html-output" name="incomingData"> </div> 
   <script>
     // globally accessible data obj
-    window.currentSankeyData = null;
+    window.currentData = null;
 
-	//renamed the two parseData functions because they were interfering
-    function parseSankeyData(){
+    function parseData(){
+      
 	  var text = $('#sankeyJSON').text().trim(),
       data = JSON.parse(text !== '' ? text : '{}');
-      window.currentSankeyData = data;
+    
+      window.currentData = data;
+	  console.log(window.currentData['bill'])
+	  runD3(window.currentData)
     }
 	
-	//From Mike: add wrapper function that both parses new data and reloads Sankey
-	function refreshUI(){
-        $('#sankeyJSON').hide()
-		parseSankeyData()
-
-		console.log("code ran")
-		console.log(window.currentSankeyData)
-		//if current data isn't empty (because Shiny hasn't sent it yet) 
-		//required because D3 will throw errors if called on empty data
-		if (!($.isEmptyObject(window.currentSankeyData))){
-			runSankey(window.currentSankeyData)
-		}
+	function doThings(){
+		setTimeout(parseData(),5000)
+		
 	}
-	
-    parseSankeyData();
-	//From Mike: Changed outcome of trigger frm parseData to refreshUI
-    $('[name=billSankey]').on('change', refreshUI);  
-  </script>
+    $('[name=billSankey]').on('change', parseData);  
+	parseData()
 
-  <p>
-    <label>Congressional Bill for Choropleth:</label><br />
-    <select name="billChoro">
-      <option selected disabled hidden value=''></option>
-      <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
-      <option value="Keystone Pipeline Approval Act">Keystone Pipeline Approval Act</option>
-      <option value="Small Business Regulatory Flexibility Improvement Act">Small Business Regulatory Flexibility Improvement Act</option>
-    </select> 
-  </p>
-
-  <div id="choroJSON" class="shiny-html-output"> </div> 
-  <script>
-    // globally accessible data obj
-    window.currentChoroData = null;
-
-    function parseChoroData(){
-      var text = $('#choroJSON').text().trim(),
-      data = JSON.parse(text !== '' ? text : '{}');
-    
-      console.log(data);
-    
-      window.currentChoroData = data;
-    }
-
-    parseChoroData();
-    $('[name=billChoro]').on('change', parseChoroData);  
   </script>
 
 <!--Sankey Plot Styling-->
@@ -122,7 +87,6 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
-    .attr("id", "curr_plot")
   .append("g")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
@@ -138,11 +102,9 @@ var path = sankey.link();
 var dataset = window.currentData
 
 
-function runSankey(dataset) { 
+function runD3(dataset) { 
 	console.log("Inside runD3:")
 	console.log(dataset)
-    $(".link").remove();
-    $(".node").remove();
 	graph = dataset
 		/*
 		var nodeMap = {};
@@ -236,11 +198,8 @@ function runSankey(dataset) {
 	  }
 	
 }
+runD3(window.currentData)
+</script>
 
-</script>  
-  
-  
-  
 </body>
-
 </html>
