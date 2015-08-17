@@ -1,9 +1,5 @@
 library(dplyr)
-library(choroplethrZip)
 
-source('dataRead.R')
-
-data(zip.regions)
 states <- read.csv('../data/state_table.csv', stringsAsFactors = FALSE)
 stateCodes <- data.frame(Contributor.State = c('AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
                                                'CT', 'DE', 'DC', 'FL', 'GA', 'HI',
