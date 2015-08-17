@@ -37,7 +37,9 @@
 	
 	//From Mike: add wrapper function that both parses new data and reloads Sankey
 	function refreshUI(){
+        $('#sankeyJSON').hide()
 		parseSankeyData()
+
 		console.log("code ran")
 		console.log(window.currentSankeyData)
 		//if current data isn't empty (because Shiny hasn't sent it yet) 
@@ -120,6 +122,7 @@ var formatNumber = d3.format(",.0f"),    // zero decimal places
 var svg = d3.select("#chart").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
+    .attr("id", "curr_plot")
   .append("g")
     .attr("transform", 
           "translate(" + margin.left + "," + margin.top + ")");
@@ -138,6 +141,8 @@ var dataset = window.currentData
 function runSankey(dataset) { 
 	console.log("Inside runD3:")
 	console.log(dataset)
+    $(".link").remove();
+    $(".node").remove();
 	graph = dataset
 		/*
 		var nodeMap = {};
