@@ -1,5 +1,5 @@
 server <- function(input, output) {
-  output$linePlot <- renderPlot({
+  output$line <- renderPlot({
     plotData <- lineOutputBill(lineData, input$billLine)
     limits <- c(min(lineData$Contribution.Amount),
                 max(lineData$Contribution.Amount))

@@ -32,15 +32,14 @@ ui <- fluidPage(
                       )         
              ),
              tabPanel('Line Plot',
-                      titlePanel('Contributions by Vote and Timeline'),
+                      titlePanel('Contributions by Date and Vote'),
                       sidebarLayout(
                         sidebarPanel(selectInput('billLine', 'Select a Congressional Bill',
                                                  choices = unique(levels(lineData$bill)),
                                                  selected = unique(levels(lineData$bill)[1]))),
-                        mainPanel(renderPlot("linePlot"))
-                      )         
-             ),
-             
+                        mainPanel(plotOutput('line'))
+                      )
+             ), 
              tabPanel('Choropleth',
                       titlePanel('Contributions by State'),
                       sidebarLayout(
