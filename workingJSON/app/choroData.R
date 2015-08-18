@@ -1,5 +1,5 @@
 library(dplyr)
-library(choroplethrZip)
+#library(choroplethrZip)
 
 source('dataRead.R')
 

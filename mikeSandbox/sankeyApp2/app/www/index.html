@@ -24,6 +24,7 @@
   </p>
 
   <div id="sankeyJSON" class="shiny-html-output"> </div> 
+  
   <script>
     // globally accessible data obj
     window.currentSankeyData = null;
@@ -37,14 +38,13 @@
 	
 	//From Mike: add wrapper function that both parses new data and reloads Sankey
 	function refreshUI(){
-        $('#sankeyJSON').hide()
+        $('#sankeyJSON').show()
 		parseSankeyData()
-
-		console.log("code ran")
-		console.log(window.currentSankeyData)
+		//$('#sankeyJSON').hide()
 		//if current data isn't empty (because Shiny hasn't sent it yet) 
 		//required because D3 will throw errors if called on empty data
 		if (!($.isEmptyObject(window.currentSankeyData))){
+			console.log("Code RAN")
 			runSankey(window.currentSankeyData)
 		}
 	}
@@ -70,10 +70,9 @@
     window.currentChoroData = null;
 
     function parseChoroData(){
+	  $('#choroJSON').hide()
       var text = $('#choroJSON').text().trim(),
       data = JSON.parse(text !== '' ? text : '{}');
-    
-      console.log(data);
     
       window.currentChoroData = data;
     }
@@ -139,8 +138,7 @@ var dataset = window.currentData
 
 
 function runSankey(dataset) { 
-	console.log("Inside runD3:")
-	console.log(dataset)
+	//Alex: remove links and nodes
     $(".link").remove();
     $(".node").remove();
 	graph = dataset
@@ -162,8 +160,6 @@ function runSankey(dataset) {
 	
 	  ns = sankey
 		  .nodes(graph.nodes)
-		  console.log('ns')
-		  console.log(ns)
 		  ns.links(graph.links)
 		  
 		  .layout(32);
