@@ -19,6 +19,8 @@ choroOutputBill <- function(choroData, states, billName) {
   # names(ccc) <- c("region", "value")
 
   ccc <- inner_join(choroDataBill, states, by = 'id')
+  ccc <- select(ccc, name, dollar)
+  colnames(ccc) <- c('region', 'value')
   ccc$region <- tolower(ccc$region)
   state_choropleth(ccc)
 }
