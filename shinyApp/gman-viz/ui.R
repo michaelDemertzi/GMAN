@@ -31,7 +31,15 @@ ui <- fluidPage(
                         mainPanel(sankeyNetworkOutput("sankeyPlot"))
                       )         
              ),
-             
+             tabPanel('Line Plot',
+                      titlePanel('Contributions by Date and Vote'),
+                      sidebarLayout(
+                        sidebarPanel(selectInput('billLine', 'Select a Congressional Bill',
+                                                 choices = unique(levels(lineData$bill)),
+                                                 selected = unique(levels(lineData$bill)[1]))),
+                        mainPanel(plotOutput('line'))
+                      )
+             ), 
              tabPanel('Choropleth',
                       titlePanel('Contributions by State'),
                       sidebarLayout(
