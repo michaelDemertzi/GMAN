@@ -34,7 +34,7 @@ sankeyDataTopSource <- allBills %>%
   ungroup() %>%
   arrange(desc(value)) %>%
   group_by(bill) %>%
-  slice(1:10)
+  slice(1:50)
 
 sankeyDataTopTarget <- allBills %>%
   filter(Contributor %in% sankeyDataTopSource$Contributor) %>%
@@ -43,7 +43,7 @@ sankeyDataTopTarget <- allBills %>%
   ungroup() %>%
   arrange(desc(value)) %>%
   group_by(bill) %>%
-  slice(1:10)
+  slice(1:50)
 
 sankeyDataTopContributions <- inner_join(inner_join(allBills,
                                                     sankeyDataTopSource),

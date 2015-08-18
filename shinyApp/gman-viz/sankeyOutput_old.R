@@ -1,10 +1,6 @@
 library(dplyr)
 library(jsonlite)
 
-find_index <- function(string, nodes){
-  as.integer(match(string, nodes$name) - 1)
-}
-
 sankeyOutputBill <- function(billName) {
   if(is.null(billName)) {
     return('{}')
@@ -90,28 +86,13 @@ sankeyOutputBill <- function(billName) {
   sankeyDataVoteLinks <- arrange(sankeyDataVoteLinks,
                                  desc(value))
   
+  sankeyDataLinks <- rbind(sankeyDataContributionLinks,
+                           sankeyDataSupportLinks,
+                           sankeyDataVoteLinks)
+  
   colnames(sankeyDataNodes) <- c('node', 'name')
-  
-  sankeyContribSupport <- unique(merge(subset(allBills, bill=billName), sankeyDataTopContributions)[,c("Interest.Group.Position", "Contributor", "value")])
-  sankeyContribSupport <- aggregate(value ~ Interest.Group.Position + Contributor, sankeyContribSupport, sum)
-  sankeyContribSupport$Interest.Group.Position <- sapply(sankeyContribSupport$Interest.Group.Position, find_index, nodes=sankeyDataNodes)
-  sankeyContribSupport$Contributor <- sapply(sankeyContribSupport$Contributor, find_index, nodes=sankeyDataNodes)
-  names(sankeyContribSupport) <- c("source", "target", "value")
-
-  sankeyLegSupport <- unique(merge(subset(allBills, bill=billName), sankeyDataTopContributions)[,c("Legislator", "Vote", "value")])
-  sankeyLegSupport <- aggregate(value ~ Legislator + Vote, sankeyLegSupport, sum)
-  sankeyLegSupport$Legislator <- sapply(sankeyLegSupport$Legislator, find_index, nodes=sankeyDataNodes)
-  sankeyLegSupport$Vote <- sapply(sankeyLegSupport$Vote, find_index, nodes=sankeyDataNodes)
-  names(sankeyLegSupport) <- c("source", "target", "value")
-  
-  
-  
-  sankeyDataLinks <- rbind(sankeyContribSupport,sankeyDataContributionLinks,sankeyLegSupport)
-  
-  
 
   sankeyNetwork(sankeyDataLinks, sankeyDataNodes, "source", "target", "value", "name")
-# sankeyContribSupport
-# find_index("Support", sankeyDataNodes)
+#    sankeyDataLinks
 }
 

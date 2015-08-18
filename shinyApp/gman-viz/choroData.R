@@ -1,6 +1,5 @@
 library(dplyr)
 
-source('dataRead.R')
 
 states <- read.csv('data/state_table.csv', stringsAsFactors = FALSE)
 stateCodes <- data.frame(Contributor.State = c('AL', 'AK', 'AZ', 'AR', 'CA', 'CO',
