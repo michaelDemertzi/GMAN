@@ -7,13 +7,13 @@ library(scales)
 library(extrafont)
 library(networkD3)
 
-source('dataRead.R')
-source('choroData.R')
+source('app/dataRead.R')
+source('app/choroData.R')
 source('app/sankeyData.R')
-source('lineData.R')
+source('app/lineData.R')
 
-source('lineOutput.R')
-source('choroOutput.R')
+source('app/lineOutput.R')
+source('app/choroOutput.R')
 source('app/sankeyOutput.R')
 
 ui <- fluidPage(
@@ -25,7 +25,7 @@ ui <- fluidPage(
                         sidebarPanel(selectInput('billSankey', 'Select a Congressional Bill',
                                                  choices = unique(levels(sankeyDataTopSupport$bill)),
                                                  selected = unique(levels(sankeyDataTopSupport$bill)[1]))),
-                        mainPanel(sankeyNetworkOutput(sankeyPlot))
+                        mainPanel(sankeyNetworkOutput("sankeyPlot"))
                       )         
              )
   )
@@ -34,6 +34,6 @@ ui <- fluidPage(
 server <- function(input, output) {
   
 
-  output$sankeyPlot <- renderSankeyNetwork({sankeyOutputBill("Food Safety Labeling Act")})
+  output$sankeyPlot <- renderSankeyNetwork({sankeyOutputBill(input$billSankey)})
 }
 shinyApp(ui, server)

@@ -92,7 +92,7 @@ sankeyOutputBill <- function(billName) {
   
   colnames(sankeyDataNodes) <- c('node', 'name')
 
-#   sankeyNetwork(sankeyDataLinks, sankeyDataNodes, "source", "target", "value", "name")
-   sankeyDataLinks
+  sankeyNetwork(sankeyDataLinks, sankeyDataNodes, "source", "target", "value", "name")
+#    sankeyDataLinks
 }
 

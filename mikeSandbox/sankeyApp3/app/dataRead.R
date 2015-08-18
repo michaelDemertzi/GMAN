@@ -1,26 +1,26 @@
 library(dplyr)
 
-usaFreedom <- read.csv('../data/usaFreedom.csv', stringsAsFactors = FALSE)
+usaFreedom <- read.csv('data/usafreedom.csv', stringsAsFactors = FALSE)
 names(usaFreedom)[4] <- 'Vote'
 names(usaFreedom)[14] <- 'Interest.Group.Position'
 usaFreedom$bill <- 'USA Freedom Act'
 
-keystone <- read.csv('../data/keystone.csv', stringsAsFactors = FALSE)
+keystone <- read.csv('data/keystone.csv', stringsAsFactors = FALSE)
 names(keystone)[4] <- 'Vote'
 names(keystone)[14] <- 'Interest.Group.Position'
 keystone$bill <- 'Keystone Pipeline Approval Act'
 
-smallBusinessBurden <- read.csv('../data/smallBusinessBurden.csv', stringsAsFactors = FALSE)
+smallBusinessBurden <- read.csv('data/smallbusinessburden.csv', stringsAsFactors = FALSE)
 names(smallBusinessBurden)[4] <- 'Vote'
 names(smallBusinessBurden)[14] <- 'Interest.Group.Position'
 smallBusinessBurden$bill <- 'Small Business Regulatory Flexibility Improvement Act'
 
-foodSafety <- read.csv('../data/foodsafety.csv', stringsAsFactors = FALSE)
+foodSafety <- read.csv('data/foodsafety.csv', stringsAsFactors = FALSE)
 names(foodSafety)[4] <- 'Vote'
 names(foodSafety)[14] <- 'Interest.Group.Position'
 foodSafety$bill <- 'Food Safety Labeling Act'
 
-studentSuccess <- read.csv('../data/studentSuccess.csv', stringsAsFactors = FALSE)
+studentSuccess <- read.csv('data/studentsuccess.csv', stringsAsFactors = FALSE)
 names(studentSuccess)[4] <- 'Vote'
 names(studentSuccess)[14] <- 'Interest.Group.Position'
 studentSuccess$bill <- 'Student Success Act'
