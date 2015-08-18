@@ -26,5 +26,7 @@ server <- function(input, output) {
   }) 
   output$sankeyPlot <- renderSankeyNetwork({sankeyOutputBill(input$billSankey)})
   output$choropleth <- renderPlot({choroOutputBill(choroData, states, input$billChoro)})
+  output$choroplethPositionSupport <- renderPlot({choroOutputPositionBill(choroData, states, input$billChoroPosition, 'support')})
+  output$choroplethPositionOppose <- renderPlot({choroOutputPositionBill(choroData, states, input$billChoroPosition, 'oppose')})
 }
 
