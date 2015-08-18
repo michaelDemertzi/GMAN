@@ -94,4 +94,5 @@ sankeyOutputBill <- function(billName) {
 
   return(toJSON(list('nodes' = sankeyDataNodes,
                      'links' = sankeyDataLinks)))
+
 }

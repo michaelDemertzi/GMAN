@@ -16,8 +16,8 @@
   <p>
     <label>Congressional Bill for Sankey:</label><br />
     <select name="billSankey">
-      <option selected disabled hidden value=''></option>
-      <option value="Food Safety Labeling Act">Food Safety Labeling Act</option>
+      <!-- <option selected disabled hidden value=''></option> -->
+      <option selected value="Food Safety Labeling Act">Food Safety Labeling Act</option>
       <option value="Keystone Pipeline Approval Act">Keystone Pipeline Approval Act</option>
       <option value="Small Business Regulatory Flexibility Improvement Act">Small Business Regulatory Flexibility Improvement Act</option>
     </select> 
@@ -161,7 +161,7 @@ function runSankey(dataset) {
 	  ns = sankey
 		  .nodes(graph.nodes)
 		  ns.links(graph.links)
-		  
+
 		  .layout(32);
 		  
 		  
@@ -234,8 +234,7 @@ function runSankey(dataset) {
 }
 
 </script>  
-  
-  
+<script> if ($('#sankeyJSON').text().length>1){refreshUI()}</script>
   
 </body>
 
