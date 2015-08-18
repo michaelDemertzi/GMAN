@@ -65,43 +65,22 @@ sankeyOutputBill <- function(billName) {
   sankeyDataContributionLinks <- arrange(sankeyDataContributionLinks,
                                          desc(value))
   
-  colnames(sankeyDataNodes) <- c('source', 'Legislator')
-  sankeyDataSupportLinks <- inner_join(sankeyDataTopSupport, sankeyDataNodes)
-  colnames(sankeyDataNodes) <- c('target', 'Interest.Group.Position')
-  sankeyDataSupportLinks$Interest.Group.Position <-
-    as.character(sankeyDataSupportLinks$Interest.Group.Position)
-  sankeyDataSupportLinks <- inner_join(sankeyDataSupportLinks, sankeyDataNodes)
-  sankeyDataSupportLinks <- ungroup(sankeyDataSupportLinks)
-  sankeyDataSupportLinks <- select(sankeyDataSupportLinks,
-                                   source, target, value)
-  sankeyDataSupportLinks <- arrange(sankeyDataSupportLinks,
-                                    desc(value))
-  
   colnames(sankeyDataNodes) <- c('source', 'Interest.Group.Position')
-  sankeyDataTopVote$Interest.Group.Position <-
-    as.character(sankeyDataTopVote$Interest.Group.Position)
-  sankeyDataVoteLinks <- inner_join(sankeyDataTopVote, sankeyDataNodes)
-  sankeyDataVoteLinks$Vote <- as.character(sankeyDataVoteLinks$Vote)
-  colnames(sankeyDataNodes) <- c('target', 'Vote')
-  sankeyDataVoteLinks <- inner_join(sankeyDataVoteLinks, sankeyDataNodes)
-  sankeyDataVoteLinks <- ungroup(sankeyDataVoteLinks)
-  sankeyDataVoteLinks <- select(sankeyDataVoteLinks,
-                                source, target, value)
-  sankeyDataVoteLinks <- arrange(sankeyDataVoteLinks,
-                                 desc(value))
   
   colnames(sankeyDataNodes) <- c('node', 'name')
   
-  sankeyContribSupport <- unique(merge(subset(allBills, bill=billName), sankeyDataTopContributions)[,c("Interest.Group.Position", "Contributor", "value")])
-  sankeyContribSupport <- aggregate(value ~ Interest.Group.Position + Contributor, sankeyContribSupport, sum)
+  sankeyContribSupport <- unique(merge(subset(allBills, bill==billName), sankeyDataTopContributions, by="Contributor")[,c("Interest.Group.Position", "Contributor")])
+  sankeyContribTotals <- aggregate(value ~ source, sankeyDataContributionLinks, sum)
   sankeyContribSupport$Interest.Group.Position <- sapply(sankeyContribSupport$Interest.Group.Position, find_index, nodes=sankeyDataNodes)
   sankeyContribSupport$Contributor <- sapply(sankeyContribSupport$Contributor, find_index, nodes=sankeyDataNodes)
+  sankeyContribSupport <- unique(merge(sankeyContribSupport, sankeyContribTotals, by.x="Contributor", by.y="source")[,c("Interest.Group.Position", "Contributor", "value")])
   names(sankeyContribSupport) <- c("source", "target", "value")
 
-  sankeyLegSupport <- unique(merge(subset(allBills, bill=billName), sankeyDataTopContributions)[,c("Legislator", "Vote", "value")])
-  sankeyLegSupport <- aggregate(value ~ Legislator + Vote, sankeyLegSupport, sum)
+  sankeyLegSupport <- unique(merge(subset(allBills, bill==billName), sankeyDataTopContributions, by="Legislator")[,c("Legislator", "Vote")])
+  sankeyLegTotals <- aggregate(value ~ target, sankeyDataContributionLinks, sum)
   sankeyLegSupport$Legislator <- sapply(sankeyLegSupport$Legislator, find_index, nodes=sankeyDataNodes)
   sankeyLegSupport$Vote <- sapply(sankeyLegSupport$Vote, find_index, nodes=sankeyDataNodes)
+  sankeyLegSupport <- unique(merge(sankeyLegSupport, sankeyLegTotals, by.x="Legislator", by.y="target")[,c("Legislator", "Vote", "value")])
   names(sankeyLegSupport) <- c("source", "target", "value")
   
   
@@ -111,7 +90,5 @@ sankeyOutputBill <- function(billName) {
   
 
   sankeyNetwork(sankeyDataLinks, sankeyDataNodes, "source", "target", "value", "name")
-# sankeyContribSupport
-# find_index("Support", sankeyDataNodes)
 }
 
