@@ -7,6 +7,7 @@ library(scales)
 library(extrafont)
 library(networkD3)
 library(choroplethr)
+library(choroplethrMaps)
 
 source('dataRead.R')
 source('choroData.R')
